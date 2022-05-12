@@ -1,0 +1,108 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Transactions {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+      <div class="d-block mb-4 mb-md-0">
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+              <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+               
+              <li class="breadcrumb-item"><a href="#">Stock</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Reclamations</li>
+          </ol>
+      </nav>
+      <h2 class="h4">List Des Reclamation {{titre_etat}}</h2>
+      <p class="mb-0">Demander les produits</p>
+  </div>
+    
+  </div>
+  
+  <div class="table-settings my-0">
+      <div class="row ">
+          <div class="col-5 col-md-2 col-xl-7 ">
+                  <form method="post">
+                      {% csrf_token %}
+                      <div class="input-group mb-3">
+
+                      <select  id="etat" name = "etat" aria-label="Default select example" class="form-control">
+                        <option selected>choisir l'état des Reclamations</option>
+                        <option value="en-cours" class="text-warning">en-cours</option>
+                        <option value="resolu" class="text-success">valider</option>
+                        <option value="case" class="text-danger">case</option> 
+                    </select>
+              
+                <div class="input-group-append ">
+                    <button class="btn btn-outline-secondary" type="submit">rechercher</button>
+                </div>
+                </div>
+
+                  </form>
+              </div>
+   
+      </div>
+  </div>
+  
+  <div class="card card-body border-0 shadow table-wrapper table-responsive">
+      <table id="table" class="table table-hover">
+          <thead>
+              <tr>
+                  <th class="border-gray-200">id_item</th>
+                  <th class="border-gray-200">designation</th>
+                  <th class="border-gray-200">personne</th>			
+                  <th class="border-gray-200">date</th>				
+                  <th class="border-gray-200">emplacement</th>
+                  <th class="border-gray-200">Etat</th>
+                  <th class="border-gray-200">observation</th>
+                  <th class="border-gray-200">reparer</th>
+           
+                  
+                
+              </tr>
+          </thead>
+          <tbody>
+              <!-- Item -->
+              {% for item in list_recla %}
+    
+              <tr>
+                
+                <td>{{item.article.ci}}</td>
+                <td> {{item.article.id_sous_famille.designation}} :{{item.article.id_sous_famille.marque}} </td>
+                <td>{{item.demander}}</td>
+                <td>{{item.created}}</td>
+                <td>{{item.article.issue_to.nom_dis}}</td>
+                <td><span class="badge super-badge {% if item.etat == 'resolu' %} bg-success {% elif item.etat == 'en-cours'%} bg-warning {% else %} bg-danger {% endif %}">{{item.etat}}</span></td>
+                          <td class="fw-bold d-flex align-items-center">
+                            {{item.observation}}
+                            </td> 
+                            <td>
+                                <a href="{% url 'verifier_reparation' item.id %}"  class="btn btn-warning btn-sm "><span class="glyphicon glyphicon-trash"></span> resolution</a>
+                            </td>
+                        </tr>
+                        
+                        {% endfor %}
+                                
+          </tbody>
+      </table>
+     </div>
+     
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+$(document).ready(function() {
+  $('#table').DataTable();
+} );
+
+</script>
+
+
+
+{% endblock javascripts %}

@@ -1,0 +1,96 @@
+{% extends "layouts/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<div>
+  <form  method="POST" id="myform">
+        {% csrf_token %}
+        
+
+            {{form|crispy}}
+          
+            {{ formset.management_form }}
+
+            {% for field in formset %}
+           
+              
+                  <div class="item d-flex justify-content-between" style="margin-top: 25px;">
+                    {{field}}
+                    <button class="align-self-center btn btn-danger delete-image-form">Delete</button>
+                  </div>
+                
+              
+              
+                {% endfor %}
+             
+               
+       
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button id="add-form" type="button" class="btn btn-success">ajouter article</button>
+     </form> 
+  
+  
+    </div>
+</div>
+{% endblock content %}
+{% block javascripts %}
+    <script>
+ $("document").ready(function(){
+    $('select').select2();
+  })
+
+const imageForm = document.getElementsByClassName("item");
+const mainForm = document.querySelector("#myform");
+const addImageFormBtn = document.querySelector("#add-form");
+const submitFormBtn = document.querySelector('[type="submit"]');
+const totalForms = document.querySelector("#id_form-TOTAL_FORMS");
+
+let formCount = imageForm.length - 1;
+
+function updateForms() {
+    let count = 0;
+    for (let form of imageForm) {
+        const formRegex = RegExp(`form-(\\d){1}-`, 'g');
+        form.innerHTML = form.innerHTML.replace(formRegex, `form-${count++}-`)
+    }
+}
+
+addImageFormBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+    $('select').select2('destroy');
+    const newImageForm = imageForm[0].cloneNode(true);
+    const formRegex = RegExp(`form-(\\d){1}-`, 'g');
+    formCount++;
+    newImageForm.innerHTML = newImageForm.innerHTML.replace(formRegex, `form-${formCount}-`);
+    mainForm.insertBefore(newImageForm, submitFormBtn);
+    totalForms.setAttribute('value', `${formCount + 1}`);
+    $('select').select2();
+
+});
+
+mainForm.addEventListener("click", function (event) {
+    if (event.target.classList.contains("delete-image-form")) {
+        $('select').select2('destroy');
+        event.preventDefault();
+        event.target.parentElement.remove();
+        formCount--;
+        updateForms();
+        totalForms.setAttribute('value', `${formCount + 1}`);
+        $('select').select2();
+       
+    }
+});
+    </script>
+{% endblock javascripts %}

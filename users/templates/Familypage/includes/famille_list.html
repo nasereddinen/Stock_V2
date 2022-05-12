@@ -1,0 +1,23 @@
+{% for famille in familles %}
+  <tr>
+    <td>{{ famille.id }}</td>
+    <td>{{ famille.famille }}</td>
+    
+    <td style="width: 150px">
+      <button type="button"
+              class="btn btn-warning btn-sm js-update-famille"
+              data-url="{% url 'famille_update' famille.id %}">
+        <span class="glyphicon glyphicon-pencil"></span> Edit
+      </button>
+      <button type="button"
+              class="btn btn-danger btn-sm js-delete-famille"
+              data-url="{% url 'famille_delete' famille.id %}">
+        <span class="glyphicon glyphicon-trash"></span> Delete
+      </button>
+    </td>
+  </tr>
+{% empty %}
+  <tr>
+    <td colspan="8" class="text-center bg-warning">No famille</td>
+  </tr>
+{% endfor %}

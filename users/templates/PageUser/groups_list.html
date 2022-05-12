@@ -1,0 +1,93 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+
+{% if user.is_superuser %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+  <div class="d-block mb-4 mb-md-0">
+      <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+          <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+            <li class="breadcrumb-item">
+              <a href="{% url 'index' %}">
+                  <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+              </a>
+          </li>
+          <li class="breadcrumb-item"><a href="#">Stock</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Users</li>
+      </ol>
+  </nav>
+  <h2 class="h4">Table Groups</h2>
+  <p class="mb-0">tous les Groups</p>
+</div>
+  <div class="btn-toolbar mb-2 mb-md-0">
+      <a href="{% url 'add_groups' %}" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
+          <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+Creer Group      </a>
+      
+  </div>
+</div>
+
+<div class="table-settings mb-4">
+  <div class="row align-items-center justify-content-between">
+    
+      <div class="col-4 col-md-2 col-xl-1 ps-md-0 text-end">
+          <div class="dropdown">
+              
+              <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end pb-0">
+                  <span class="small ps-3 fw-bold text-dark">Show</span>
+                  <a class="dropdown-item d-flex align-items-center fw-bold" href="#">10 <svg class="icon icon-xxs ms-auto" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg></a>
+                  <a class="dropdown-item fw-bold" href="#">20</a>
+                  <a class="dropdown-item fw-bold rounded-bottom" href="#">30</a>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+  <table id="table" class="table table-hover">
+      
+      <thead>
+        <tr>
+          <th class="border-gray-200">nom</th>
+          <th class="border-gray-200">role</th>
+       <th class="border-gray-200">actions</th>
+        </tr>
+     
+            <tbody>
+                {% for group in list_groups %}
+               
+              <tr>
+                <td>{{group.name}}</td>
+               
+                <td>{{group.email}}</td>
+                
+                <td>
+                  <a class="btn btn-warning btn-sm" href="{% url 'update_group' group.id %}">Update</a>
+                  <a class="btn btn-danger btn-sm" href="">Delete</a>
+              </td>
+                </td>
+                
+              </tr>
+            
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+      <!-- follow me template -->
+      {% endif %}
+      <p>pas d'access pour vous pour cette page</p>
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+$(document).ready(function() {
+  $('#table').DataTable();
+} );
+
+</script>
+
+
+
+{% endblock javascripts %}

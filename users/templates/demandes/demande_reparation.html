@@ -1,0 +1,79 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Transactions {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+      <div class="d-block mb-4 mb-md-0">
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+              <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+               
+              <li class="breadcrumb-item"><a href="#">Stock</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Demandes</li>
+          </ol>
+      </nav>
+      <h2 class="h4">List Des produits Affecter </h2>
+      <p class="mb-0">choisir un article pour remplir la formulaire de reparation</p>
+  </div>
+    
+  </div>
+  
+  
+  
+  
+  <div class="card card-body border-0 shadow table-wrapper table-responsive">
+      <table id="table" class="table table-hover">
+          <thead>
+              <tr>
+                  <th class="border-gray-200">#</th>						
+                  <th class="border-gray-200">Designation</th>
+                  <th class="border-gray-200">Disponilité</th>
+                  <th class="border-gray-200">Marque</th>
+                  <th class="border-gray-200">Emplacement</th>
+                  <th class="border-gray-200">demander</th>
+              </tr>
+          </thead>
+          <tbody>
+              <!-- la list des produit disponible aux Stock -->
+              {% for article in list_rep %}
+    
+                <tr>
+                    <td> {{forloop.counter}} </td>
+                <td>{{article.id_sous_famille.designation}}</td>
+               
+                <td><div class="ms-sm-3"><span class="badge super-badge bg-success">disponible</span></td>
+                <td>{{article.id_sous_famille.marque}}</td>
+                <td>{{article.issue_to.nom_dis}}</td>
+                <td class="fw-bold d-flex align-items-center">
+                <div class="d-flex">
+                <a href="{% url 'demande_reparation' article.id %}"  class="btn btn-danger btn-sm "><span class="glyphicon glyphicon-trash"></span> Reclamer</a>
+                </div>
+                </td> 
+                </tr>
+                        
+                        {% endfor %}
+                                
+          </tbody>
+      </table>
+     </div>
+     
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+$(document).ready(function() {
+  $('#table').DataTable();
+} );
+
+</script>
+
+
+
+{% endblock javascripts %}

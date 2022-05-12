@@ -1,0 +1,148 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Tables {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-block mb-4 mb-md-0">
+        <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+            <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+              <li class="breadcrumb-item">
+                <a href="{% url 'index' %}">
+                    <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                </a>
+            </li>
+            <li class="breadcrumb-item"><a href="#">Stock</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Stock</li>
+        </ol>
+    </nav>
+    <h2 class="h4">Table Sortie Stock</h2>
+    <p class="mb-0">tous les Articles Disponible</p>
+</div>
+<div class="d-flex mb-3">
+  <form method="get">
+    
+  <select name="filter_gat" class="form-select fmxw-200" aria-label="Message select example">
+    <option selected="selected">Type d'item</option>
+    <option value="oui">consommable</option>
+    <option value="non">Non_consommable</option>
+    
+  </select>
+  <button type="submit" class="btn btn-sm px-3 btn-secondary ms-3">Search</button>
+</form>
+</div>
+        
+    </div>
+</div>
+
+  <div class="card border-0 shadow mb-4">
+      <div class="card-body">
+          <div class="table-responsive">
+              <table class="table table-centered table-nowrap mb-0 rounded" style='width: 100%;'>
+                  <thead class="thead-light">
+                      <tr>
+                          <th class="border-0 rounded-start">Model</th>
+                          <th class="border-0">Qauntité</th>
+                          <th class="border-0">#Code</th>
+                          <th class="border-0">Model</th>
+                          <th class="border-0">Barcode</th>
+                          <th class="border-0">Actions</th>
+                          
+                          
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <!-- Item -->
+                      {% for article in list_article %}
+                      <tr>
+                          <td>{{article.id_sous_famille.designation}}</td>
+                          <td class="fw-bold d-flex align-items-center">
+                            <div class="d-flex">
+                              <a href="{% url 'issue_items' article.id %}">
+                             {{article.quantity}}    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/></svg></a>
+                            </div>
+                          
+                            </td>
+                          <td>
+                            {{article.ci}}
+                          </td>
+                          
+                          <td>
+                            {{article.id_sous_famille.model}}
+                          </td>
+                          <td>
+                              {% if article.ci == 'consommable' %}
+                              <a href="#"> pas de barcode </a>
+                              {% else %}
+                            <a href="{% url 'chaque_Barcode' article.id %}">barcode </a>
+                            {% endif %}
+                          </td>
+                          
+                          <td class="fw-bold d-flex align-items-center">
+                            <div class="d-flex">
+                              <a href="{% url 'issue_items' article.id %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                                <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+                              </svg> </a>
+                            </div>
+                          
+                            </td>
+                            
+                      </tr>
+
+                      <!-- End of Item -->
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+
+  
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+ var data = JSON.parse("{{ms|escapejs}}");
+ $(document).ready(function() {
+  $('.table').DataTable();
+} );
+
+$(document).ready(function () {
+            const notyf = new Notyf({
+                position: {
+                    x: 'right',
+                    y: 'top',
+                },
+                types: [
+                    {
+                        type: 'info',
+                        background: '#0948B3',
+                        icon: {
+                            className: 'fas fa-info-circle',
+                            tagName: 'span',
+                            color: '#fff'
+                        },
+                        dismissible: true,
+                        
+                    }
+                ],
+               
+            });
+            notyf.open({
+                type: 'info',
+                message: 'il rest '+'<b>'+data+'</b> item',
+                
+            })
+            
+        });
+</script>
+
+
+{% endblock javascripts %}

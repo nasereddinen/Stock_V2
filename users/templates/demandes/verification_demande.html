@@ -1,0 +1,121 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Transactions {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+      <div class="d-block mb-4 mb-md-0">
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+              <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+               
+              <li class="breadcrumb-item"><a href="#">Stock</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Demandes</li>
+          </ol>
+      </nav>
+      <h2 class="h4">List Des Demandes</h2>
+      <p class="mb-0">verifier les demandes</p>
+  </div>
+    
+  </div>
+  
+  <div class="table-settings my-0">
+      <div class="row align-items-center justify-content-between">
+          <div class="col-4 col-md-2 col-xl-1 ps-md-0 text-end my-0">
+              <div class="dropdown">
+                  <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end pb-0">
+                      <span class="small ps-3 fw-bold text-dark">Show</span>
+                      <a class="dropdown-item d-flex align-items-center fw-bold" href="#">10 <svg class="icon icon-xxs ms-auto" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg></a>
+                      <a class="dropdown-item fw-bold" href="#">20</a>
+                      <a class="dropdown-item fw-bold rounded-bottom" href="#">30</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="card card-body border-0 shadow table-wrapper table-responsive">
+      <table id="table" class="table table-hover">
+          <thead>
+              <tr>
+                  <th class="border-gray-200">#</th>						
+                  <th class="border-gray-200">Article</th>
+                  <th class="border-gray-200">demandeur</th>
+                  <th class="border-gray-200">Quantite</th>
+                  <th class="border-gray-200">Etat</th>
+                  <th class="border-gray-200">validation</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for article in listdemandes %}
+              <tr>
+                <td>{{article.id}}</td>
+                <td> {{article.article}} </td>
+                <td>{{article.demander}}</td>
+                <td>
+                    <div class="ms-sm-3"><span class="badge super-badge bg-success">{{article.quantite}}</span>
+                    </td>
+                          <td class=" ">
+                              {% if article.validation == 'livrer' %}
+                              <span class=" d-flex ">
+                                  <svg class="icon icon-xxs text-success me-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg> 
+                                      Accepter
+                                    </span>
+                                    {% elif article.validation == 'en-cours' %}
+                                    <span class=" d-flex "><svg class="icon icon-xxs text-purple me-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                                    </svg> 
+                                        En cours
+                                    </span>
+                                    {% else %}
+                                    <span class=" d-flex "><svg class="icon icon-xxs text-purple me-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        En cours
+                                        </span>
+                                    {% endif %}
+                          
+                            </td> 
+                            <td>
+                                <div class="d-flex">
+                                    {% if article.validation != 'livrer' %}
+                                    <form action="{% url 'valide_demande' article.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <select  id="verifier" name = "verifier" aria-label="Default select example" class="form-control d-inline-flex">
+                                            <option selected>verifier la demande</option>
+                                            <option value="en-cours" class="text-warning">en-cours</option>
+                                            <option value="livrer" class="text-success">valider</option>
+                                           
+                                        </select>
+                                        <button type="submit" class="btn btn-success btn-sm d-inline-flex">
+                                            <span class="glyphicon glyphicon-pencil"></span> verifier
+                                          </button>
+                                      </form>
+                                   {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        {% endfor %}
+                                
+          </tbody>
+      </table>
+     </div>
+     
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+$(document).ready(function() {
+  $('#table').DataTable();
+} );
+
+</script>
+
+
+
+{% endblock javascripts %}

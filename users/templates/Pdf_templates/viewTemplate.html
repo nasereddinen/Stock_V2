@@ -1,0 +1,80 @@
+{% extends 'layouts/base.html' %}
+{% load mathfilters %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+
+{% block content %}
+
+<div class="row justify-content-center mt-4">
+        <div class="col-12 col-xl-9">
+          <div class="card shadow border-0 p-4 p-md-5 position-relative">
+            <div class="d-flex justify-content-between pb-4 pb-md-5 mb-4 mb-md-5 border-bottom border-light">
+              <img class="image-md" src="/static/assets/img/brand/light.svg" height="30" width="30" alt="Rocket Logo">
+              <div><h4> Ste {{societe}}</h4>
+                <ul class="list-group simple-list">
+                  <li class="list-group-item fw-normal">Ariana/Charguia 2</li>
+                  <li class="list-group-item fw-normal">Tunisia, Tunis</li>
+                  <li class="list-group-item fw-normal">
+                    <a class="fw-bold text-primary" href="#">tanis@tanis.com</a>
+                  </li>
+                  </ul>
+                  </div>
+                  </div>
+                    <div class="mb-6 d-flex align-items-center justify-content-center">
+                      <h2 class="h1 mb-0">Facture #{{ref}}</h2><span class="badge badge-lg bg-success ms-4">Paid</span>
+                    </div>
+                    <div class="row justify-content-between mb-4 mb-md-5">
+                      <div class="col-sm"><h5>fournisseur Information:</h5>
+                        <div><ul class="list-group simple-list">
+                          <li class="list-group-item fw-normal">{{fournisseurnom}}</li>
+                          <li class="list-group-item fw-normal"><a class="fw-bold text-primary" href="#">{{fournisseurmail}}</a>
+                          </li>
+                      </ul>
+                    
+                    </div>
+                  </div>
+                  <div class="col-sm col-lg-4">
+                    <dl class="row text-sm-right">
+                      <dt class="col-6">
+                        <strong>Invoice No.</strong>
+                      </dt><dd class="col-6">{{ref}}</dd>
+                      <dt class="col-6">
+                        <strong>Date Issued:</strong></dt>
+                        
+                        <dd class="col-6">{{date}}</dd>
+                        
+                        
+                      </div></div><div class="row">
+                        <div class="col-12">
+                          <div class="table-responsive">
+                            <table class="table mb-0">
+                              <thead class="bg-light border-top">
+                                <tr>
+                                  <th scope="row" class="border-0 text-left">Item</th>
+                                  <th scope="row" class="border-0">#code</th>
+                                  <th scope="row" class="border-0">Qty</th>
+                               
+                                </thead>
+                                <tbody>
+                                    {% for item in items %}
+                                    <tr>
+                                      
+                                      <td class="desc">{{item.id_sous_famille}}</td>
+                                      <td class="unit">${{item.ci}}</td>
+                                      <td class="qty">{{item.quantity|add:item.issue_quantity}}</td>
+                                     
+                                    </tr>
+                                    {% endfor %}
+                                      </tbody>
+                                      </table></div>
+                                      </div>
+                                        <h4>Payments to:</h4>
+                                        <span>payment@volt.com</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+{% endblock content %}

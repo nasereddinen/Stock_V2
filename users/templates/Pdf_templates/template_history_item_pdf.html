@@ -1,0 +1,55 @@
+{% load static %}
+
+<H1 align="center">historique de l'article</H1>
+<h2>{{infos.id_sous_famille}}</h2>
+<h3>Date</h3>
+    <ul>
+        <li>Garantie:{{infos.reorder_level}} mois</li>
+       
+            <li>marque</li>
+       
+        <li>designation</li>
+    </ul>
+
+    <table border="1" align="center" width="100%" style="padding: 3px;">
+        <thead>
+            <tr>
+                <th class="border-gray-200">Article</th>
+                <th class="border-gray-200">code#</th>						
+                <th class="border-gray-200">codebar</th>
+                <th class="border-gray-200">quantité recu</th>
+                <th class="border-gray-200">quantité donner</th>
+                <th class="border-gray-200">emplacement</th>
+                <th class="border-gray-200">date</th>
+                <th class="border-gray-200">action par</th>
+               
+            
+
+            </tr>
+        </thead>
+        <tbody>
+          
+            <!-- Item -->
+            {% for article in data %}
+            <tr>
+              
+              <td>{{article.id_sous_famille}}</td>
+              <td>{{article.ci}}</td>
+              <td>{{article.codeibar}} </td>
+              <td>{{article.receive_quantity}}</td>
+              <td>{{article.issue_quantity}}</td>
+              <td>{{article.issue_to}}</td>
+              <td>{{article.last_updated}}</td>
+            
+                  {% if article.receive_by %}
+                <td style="color: rgb(14, 122, 14);">reception:{{article.receive_by}} </td>
+                {% else %}
+                <td style="color: rgb(252, 56, 56);"> affecter: {{article.issue_by}} </td>
+                {% endif %}
+              
+                
+            </tr>
+            {% endfor %}    
+            </tbody>
+    </table>
+</p>

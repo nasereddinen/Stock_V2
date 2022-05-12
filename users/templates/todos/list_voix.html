@@ -1,0 +1,93 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+  <div class="d-block mb-4 mb-md-0">
+      <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
+          <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
+            <li class="breadcrumb-item">
+              <a href="{% url 'index' %}">
+                  <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+              </a>
+          </li>
+          <li class="breadcrumb-item"><a href="#">Stock</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Famille</li>
+      </ol>
+  </nav>
+  <h2 class="h4">Table Todos</h2>
+  <p class="mb-0">tous les Todos</p>
+</div>
+<div class="btn-toolbar mb-2 mb-md-0">
+  <a href="{% url 'task_voix' %}" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
+      <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+Creer Par Voix     </a>
+  
+</div>
+</div>
+
+
+    
+     
+  <div style="margin-top: -50px;">
+
+
+
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+	
+    <h2>Parle a haut voix pour rediger votre tache</h2>
+    <p>Clicker sur le button parler...</p>
+    <p><button class="btn btn-success" type="button" onclick="runSpeechRecognition()">parler</button> &nbsp; <span id="action"></span></p>
+    <div id="output" class="hide"></div>
+    <form  method="POST"  class="row g-3">
+      
+        
+    <textarea class="input-group" id="text" cols="90" rows="10"></textarea>
+    <button class="btn btn-primary mt-4" type="submit">sumbit</button>
+</div>
+</form>
+</div>
+{% endblock content %}
+{% block javascripts %}
+<script>
+let alltext='';
+
+function runSpeechRecognition() {
+		        // get output div reference
+		        var output = document.getElementById("output");
+		        // get action element reference
+		        var action = document.getElementById("action");
+                // new speech recognition object
+                var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+                var recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                var text = $('#text')
+                // This runs when the speech recognition service starts
+                recognition.onstart = function() {
+                    action.innerHTML = "<small>listening, please speak...</small>";
+                };
+                
+                recognition.onspeechend = function() {
+                    action.innerHTML = "<small>stopped listening, hope you are done...</small>";
+                    recognition.stop();
+                }
+              
+                // This runs when the speech recognition service returns result
+                recognition.onresult = function(event) {
+                    var transcript = event.results[0][0].transcript;
+                    var confidence = event.results[0][0].confidence;
+                    alltext+=" "+transcript
+                    output.innerHTML = "<b>Text:</b> " + transcript + "<br/> <b>Confidence:</b> " + confidence*100+"%";
+                    output.classList.remove("hide");
+                    text.val(alltext+' ')
+                };
+              
+                 // start recognition
+                 recognition.start();
+	        }
+		</script>
+
+
+
+{% endblock javascripts %}

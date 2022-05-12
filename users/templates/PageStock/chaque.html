@@ -1,0 +1,32 @@
+{% extends "layouts/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<div class="d-grid gap-2 col-6 mx-auto">
+  <a href="{% url 'receive_items' queryset.id %}" class='btn btn-primary btn-block'>recvoire</a>
+
+<a href="{% url 'issue_items' queryset.id %}" class='btn btn-success btn-block'>donner article</a>
+</div>
+
+
+        <div class="display_table">
+          <table id='example'  class="table table-striped table-bordered">
+                  <tr>
+                    <th>nom</th>
+                    <th>quantite</th>
+                    <th>dernier mise a jour</th>
+                    <th>seuil</th>
+                  </tr>
+                  <tr>
+                    <td>{{queryset.id_sous_famille}}</td>
+                    <td>{{queryset.quantity}}</td>
+                    <td>{{queryset.last_updated}}</td>
+                    <td>{{queryset.reorder_level}}</td>
+                  </tr>
+          </table>
+        </div>
+        </div>
+        </div>
+      </div>
+        {% endblock %}

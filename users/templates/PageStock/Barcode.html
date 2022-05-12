@@ -1,0 +1,52 @@
+{% extends "layouts/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+        
+                   
+        <div class="card text-center">
+            <div class="card-header">
+             Barcode
+            </div>
+
+            <div id="section-to-print">
+                <svg id="barcode"></svg>
+                <p>Quantite : {{queryset.quantity}}</p>
+                <p>garantie: {{queryset.fac.garantie}} moins</p>
+               
+                
+            </div>
+            <div>
+            <a href="#" id="sokPrint" class="btn btn-primary btn-lg active">print</a>
+            <div class="card-footer text-muted">
+                <p id="ci">{{queryset.ci}}</p>
+            </div>
+        </div>
+        </div>
+         
+</div>
+</div>
+</div>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
+      <script>
+(function() {
+  // Using the jsBarcode library that was created by https://github.com/lindell/JsBarcode
+  var content = document.getElementById('ci').textContent
+  // Renders the initial barcode
+  JsBarcode("#barcode", content);
+
+  // binds an event that will trigger a new barcode as you type
+  
+
+  // binds an event that will print
+  document.getElementById("sokPrint").onclick = function() {
+   
+        // Write contents in the new window.
+            
+    window.print();
+  }
+  
+})();
+
+      </script>
+        {% endblock %}

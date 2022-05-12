@@ -1,0 +1,23 @@
+{% for f in fournisseurs %}
+  <tr>
+    <td>{{ f.id }}</td>
+    <td>{{ f.nom }}</td>
+    
+    <td style="width: 150px">
+      <button type="button"
+              class="btn btn-warning btn-sm js-update-fournisseur"
+              data-url="{% url 'update_fournisseur' f.id %}">
+        <span class="glyphicon glyphicon-pencil"></span> Edit
+      </button>
+      <button type="button"
+              class="btn btn-danger btn-sm js-delete-fournisseur"
+              data-url="{% url 'delete_fournisseur' f.id %}">
+        <span class="glyphicon glyphicon-trash"></span> Delete
+      </button>
+    </td>
+  </tr>
+{% empty %}
+  <tr>
+    <td colspan="8" class="text-center bg-warning">No fournisseur</td>
+  </tr>
+{% endfor %}
