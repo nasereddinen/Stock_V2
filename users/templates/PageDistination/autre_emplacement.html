@@ -22,7 +22,7 @@
     {% for soc in soc_prod %}
     {% if soc.societe == 'autre' %}
     <div class="col-6  mt-4" >
-        <div class="card border-5 {% for etat in rec %} {% if soc.societe == etat.article.issue_to.societe %} border-danger {% else %} border-success {% endif %} {% endfor %} bg-light shadow">
+        <div class="card border-5 border-success {% for etat in rec %} {% if soc.societe == etat.article.issue_to.societe %} border-danger {% else %} border-success {% endif %} {% endfor %} bg-light shadow">
             <div style="height: 160px;" class="card-body bg-light">
                 <h2 class="text-dark text-xl-center">{{soc.societe}}</2>
                     <a href="{% url 'item_emplacement' soc.societe%}" class="stretched-link"></a>

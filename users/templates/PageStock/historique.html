@@ -80,7 +80,14 @@
                 <td>{{article.issue_quantity}}</td>
                 <td>{{article.issue_to}}</td>
                 <td>{{article.last_updated}}</td>
-                <td>reception:{{article.receive_by}} </td>
+                <td>
+                    {% if article.receive_by %}
+                    reception:{{article.receive_by}}
+                {% elif article.issue_by %} 
+                affectation:{{article.issue_by}}
+                {%endif%}
+            </td>
+            
               </tr>
               {% endfor %}                      
           </tbody>

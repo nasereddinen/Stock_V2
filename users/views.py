@@ -776,7 +776,7 @@ def box_details(request,pk):
 def emplacement_autre(request):
     items = Stock.objects.filter(issue_quantity__gt=0)
     distination = distinations.objects.all()
-    reclamation=reparation_materiel.objects.all()
+    reclamation=reparation_materiel.objects.filter(etat='en-cours')
     nb_dis=distinations.objects.values('societe').annotate(Count('societe')).order_by().filter(societe__count__gte=1)
     context = {'items':items,'distinations':distination,'soc_prod':nb_dis,'rec':reclamation}
     return render(request,"./PageDistination/autre_emplacement.html",context)
