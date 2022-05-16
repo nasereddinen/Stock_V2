@@ -1,7 +1,7 @@
 from multiprocessing import context
 from turtle import st
 from venv import create
-
+from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from requests import request
 from .importation import *
 from django.db.models import Q
@@ -9,7 +9,6 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.hashers import make_password
 @login_required(login_url ='/login')
 def index(request):
-    
     users = get_user_model()
     Users =users.objects.all()
     rep = reparation_materiel.objects.all().count()
@@ -157,14 +156,16 @@ def deleteContrat(request, pk):
 
 @login_required
 def stock_ajout(request):
-      if request.method == 'GET':
+    if request.method == 'GET':
         formset = Formsetst(request.GET or None)
-        formi = fornisseurform(request.GET or None)
-      elif request.method == 'POST':
+        formi = factureform(request.GET or None)
+    elif request.method == 'POST':
         formset = Formsetst(request.POST)
-        formi = fornisseurform(request.POST)
+        formi = factureform(request.POST)
         if formi.is_valid():
             facutre = Facture.objects.create(phone_number_id=formi.data["phone_number"],ref=formi.data["ref"],Society=formi.data["Society"],dateen=formi.data['dateen'])
+        else:
+            return HttpResponse(' ref doit etre unique')
         if formset.is_valid():
             try:
                 distination = distinations.objects.get(nom_dis="stock")
@@ -182,9 +183,9 @@ def stock_ajout(request):
                     for i in range(0,quan):
                         code=str(form.cleaned_data.get('id_sous_famille'))[0:5] + str(famil.id) + str(i)+str(i+1)+str(quan)+str(facutre.id)
                         Stock(id_sous_famille=famil,quantity=1,issue_quantity=0,receive_quantity=0,reorder_level=garantie,fac=facutre,ci=code,issue_to=distination).save()
-            facutre.save()
+            
             return HttpResponseRedirect(reverse('stock_details'))
-      return render(request,"./PageStock/AjouterStock.html",{"formset":formset,"form":formi})
+    return render(request,"./PageStock/AjouterStock.html",{"formset":formset,"form":formi})
 
 @login_required
 def stock_details(request):
@@ -342,9 +343,10 @@ def gest_Distinations(request):
 
 @login_required
 def add_Distinations(request):
-    Dis_Form = DistinationForm()
+    Dis_Form = DistinationForm(None)
     if request.method == 'POST':
         Dis_Form = DistinationForm(request.POST)
+        
         if Dis_Form.is_valid():
             Dis_Form.save()
             return HttpResponseRedirect(reverse("gest_Distinations"))
@@ -429,9 +431,19 @@ def item_history_pdf(request,pk):
 
 @login_required
 def List_tasks(request):
-    tasks = Task.objects.filter()
-    
-    context = {'tasks':tasks, 'form':form}
+    tasks = Task.objects.all().order_by('created')
+    p = Paginator(tasks, 3)  # creating a paginator object
+    # getting the desired page number from url
+    page_number = request.GET.get('page')
+    try:
+        page_obj = p.get_page(page_number)  # returns the desired page object
+    except PageNotAnInteger:
+        # if page_number is not an integer then assign the first page
+        page_obj = p.page(1)
+    except EmptyPage:
+        # if page is empty then return last page
+        page_obj = p.page(p.num_pages)
+    context = {'tasks':tasks, 'form':form,'page_obj':page_obj}
     return render(request, 'todos/list.html', context)
 
 @login_required
@@ -441,12 +453,12 @@ def task_form(request):
     if request.method =='POST':
         form = TaskForm(request.POST)
         if form.is_valid():
-            form.save()
+            task=form.save()
+            task.by=request.user.username
+            task.save()
             return HttpResponseRedirect(reverse("list_tasks"))
     context = {'form':form}
     return render(request,'todos/todo_form.html',context)
-
-
 
 def List_Voice_tasks(request):
     context={}
@@ -468,8 +480,6 @@ def deleteTask(request,pk):
 	item.delete()
 	return HttpResponseRedirect(reverse("list_tasks"))
 	
-
-
 def cross_on(request,pk):
     item=Task.objects.get(id=pk)
     item.complete=True
@@ -498,7 +508,6 @@ def users_view(request):
     context = {'list_users':users_list}
     return render(request,"./PageUser/users_list.html",context)
 
-
 def add_user(request):
     if request.method == "GET":
         form = UserForm(request.GET or None)
@@ -517,19 +526,16 @@ def add_user(request):
                 user.is_staff = True
                 user.save()
             if role == 2:
-
                 comptagroup = Group.objects.get_or_create(name='comptabiliter')
                 comptagroup[0].user_set.add(user)
                 user.is_staff = False
                 user.save()
-
             elif role == 4:
                 superadmingroup = Group.objects.get_or_create(name='superadmin')
                 superadmingroup[0].user_set.add(user)
                 user.is_staff = True
                 user.is_superuser = True
                 user.save()
-
             elif role == 3:
                 managergroup = Group.objects.get_or_create(name='managers')
                 managergroup[0].user_set.add(user)
@@ -547,7 +553,6 @@ def update_user(request,pk):
             role = form.cleaned_data.get('role')
             print(role)
             if role == 4:
-                
                 use.is_staff = True
                 use.is_superuser = True
                 use.save()

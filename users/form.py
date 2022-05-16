@@ -1,5 +1,5 @@
-
-
+from typing_extensions import Self
+from weakref import ref
 from django.forms import ModelForm, widgets
 from django import forms
 from django.forms.formsets import formset_factory
@@ -7,29 +7,34 @@ from django.utils.translation import gettext_lazy as _
 from .models import *
 from django.core.exceptions import ValidationError
 
-
 class familleForm(ModelForm):
-     
+    def clean(self):
+        famille=self.cleaned_data.get('famille')
+        if Familles.objects.filter(famille=famille).exists():
+            self._errors['famille'] = self.error_class(['déja exist'])
+        return self.cleaned_data
     class Meta:
         model = Familles
         fields = '__all__'
 
 class sous_familleForm(ModelForm):
+    def clean(self):
+        pid=self.cleaned_data.get('pid1')
+        if SousFamille.objects.filter(pid1=pid).exists():
+            self._errors['pid1'] = self.error_class(['déja exist'])
+        return self.cleaned_data
     class Meta:
         model = SousFamille
         fields = ('id_famille','designation','marque','model','seuil','pid1','active','groupresp')
-        labels = {
-            'id_famille': _('famille'),
-            'pid1': _('Sérial number')
-        }
+        labels = {'id_famille': _('famille'),'pid1': _('Sérial number')}
 
 
 
 class ContactForm(ModelForm):
-    
     class Meta:
         model = Contact
         fields = ['fournisseur','nom','adresse','tel1','fax','mail','activite','ville']
+    
 class ContratForm(ModelForm):
     dateacquisition = forms.DateField(label="date d'aquisition",widget=forms.widgets.DateInput(attrs={'type': 'date'}))
     echeance = forms.DateField(label="date d'eheance",widget=forms.widgets.DateInput(attrs={'type': 'date'}))
@@ -40,14 +45,12 @@ class StockForm(ModelForm):
     class Meta:
         model = Stock
         fields = ['id_sous_famille','quantity','reorder_level']
-       
-    
+
     def __init__(self, *args,**kwargs):
         super(StockForm, self).__init__(*args,**kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
- 
-        
+
 class IssueForm(ModelForm):
     issue_to = forms.ModelChoiceField(queryset=distinations.objects.all(),label='Distination', empty_label='Select Distination')
 
@@ -57,8 +60,6 @@ class IssueForm(ModelForm):
         labels={
             'issue_to':'emplacement'
         }
-  
-
 class ReceiveForm(forms.ModelForm):
     class Meta:
         model = Stock
@@ -69,16 +70,33 @@ class ReceiveForm(forms.ModelForm):
         }
    
 #
-class fornisseurform(forms.ModelForm):
+class factureform(forms.ModelForm):
     dateen = forms.DateField(label="date d'entre",widget=forms.widgets.DateInput(attrs={'type': 'date'}))
+    def clean(self):
+        num_fac=self.cleaned_data.get('ref')
+        if Facture.objects.filter(ref=num_fac).exists():
+            self._errors['ref'] = self.error_class(['déja exist'])
+        return self.cleaned_data
+
     class Meta:
         model = Facture
         fields = ['phone_number','ref','Society','dateen']
         
-class DistinationForm(ModelForm):
+class DistinationForm(forms.ModelForm):
+    nom_dis = forms.CharField(required=True , label="Emplacement")
+    def clean(self):
+        nom_dis = self.cleaned_data.get('nom_dis')
+        societe = self.cleaned_data.get('societe')
+        if len(nom_dis) < 5:
+            self._errors['nom_dis'] = self.error_class(['A minimum of 5 characters is required'])
+        elif distinations.objects.filter(nom_dis=nom_dis,societe=societe).exists():
+            self._errors['nom_dis'] = self.error_class(['déja exist'])
+            self._errors['societe'] = self.error_class(['déja   exist'])
+        return self.cleaned_data
     class Meta:
         model = distinations
         fields = ['nom_dis','societe']       
+        
 #task form
 class TaskForm(forms.ModelForm):
     title = forms.CharField(widget= forms.Textarea(attrs={'placeholder':'Discription de votre Tache...'}),label='Tache')
@@ -97,7 +115,13 @@ class TaskForm(forms.ModelForm):
 class UserForm(ModelForm):
     username = forms.CharField(required=True , label="First Name")
     password = forms.CharField(label=_("Password"),widget=forms.PasswordInput)
-    
+    def clean(self):
+        nom = self.cleaned_data.get('username')
+        if User.objects.filter(username=nom).exists():
+            self._errors['username'] = self.error_class(['déja exist'])
+            
+        return self.cleaned_data
+
     class Meta:
         model = User
         fields = ['username','password','role','groups']

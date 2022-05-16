@@ -2,74 +2,117 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-2">
-  <div class="d-block mb-4 mb-md-0">
-      <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-          <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-            <li class="breadcrumb-item">
-              <a href="{% url 'index' %}">
-                  <svg class="icon icon-xxs" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-              </a>
-          </li>
-          <li class="breadcrumb-item"><a href="#">Stock</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Tache</li>
-      </ol>
-  </nav>
-  <h2 class="h4">Table Todos</h2>
-  <p class="mb-0">tous les Todos</p>
-</div>
-<div class="btn-toolbar mb-0 mb-md-0">
-  <a href="{% url 'task_form' %}" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
-      <svg class="icon icon-xs me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-Ajouter</a>
-</div>
-</div>
-<div class="card card-body border-0 shadow table-wrapper table-responsive">
-	
-  <table id="table" class="table table-hover">
-    <thead>
-        <tr>
-          <th>todos</th>
-          <th>personne</th>
-       <th>état</th>
-       <th>actions</th>
-        </tr>
-     </thead>
-            <tbody>
 
-	{% for task in tasks %}
-  {% if request.user in task.follows.all %}
-    <tr>
-		   <td>
-			{% if task.complete == True %}
-		<span>{{task.title}}</span>
-			{% else %}
-			<span>{{task.title}}</span>
-			{% endif %}
-            </td>
-           <td>{{user.username}}</td>
-            <td>
-              {% if task.complete == True %}
-              <a class="badge super-badge bg-success" href="{% url 'task_cross_off' task.id %}">complete</a>
+
+        
+  
+
+
+
+
+<div class="d-lg-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+<div class="col-auto d-flex justify-content-between ps-0 mb-4 mb-lg-0">
+<div class="me-lg-3">
+    <a href="{% url 'task_form' %}" class="btn btn-secondary text-dark"><span class="fas fa-plus me-2"></span><span>New Tasks</span></a>
+</div>
+
+</div>
+<div class="col-12 col-lg-6 px-0">
+<div class="mb-0">
+    <div class="input-group">
+        <span class="input-group-text" id="basic-addon3"><span class="fas fa-search"></span></span>
+        <input type="text" class="form-control" id="exampleInputIconLeft" placeholder="Search Tasks Here" aria-label="Search" aria-describedby="basic-addon3">
+    </div>
+</div>
+</div>
+</div>
+
+
+{% for task in page_obj.object_list %}
+    {% if request.user in task.follows.all %}
+    
+<div class="card hover-state border-bottom rounded-0 py-3">
+<div class="card-body d-sm-flex align-items-center flex-wrap flex-lg-nowrap py-0">
+    <div class="col-1 text-left text-sm-center mb-2 mb-sm-0">
+        <div class="form-check check-lg inbox-check me-sm-2">
+          {% if task.complete == False %}
+            <input class="form-check-input" type="checkbox"  value="" id="mailCheck4"> 
+           {% else %}
+           <input class="form-check-input" checked="true" type="checkbox" value="" id="mailCheck4"> 
+{% endif %}
+            <label class="form-check-label" for="mailCheck4"></label>
+        </div>
+    </div>
+    
+    <div class="col-11 col-lg-8 px-0 mb-4 mb-md-0">
+        <div class="mb-2">
+            <h3 class="h5">{{task.by}}</h3>
+            <div class="d-block d-sm-flex">
+                <div>                                    
+                    <h4 class="h6 fw-normal text-gray mb-3 mb-sm-0"><span class="fas fa-clock me-2"></span>{{task.created}}</h4>
+                </div>
+                {% if task.complete == False %}
+                <div class="ms-sm-1"><a href="{% url 'task_cross' task.id %}" class="badge super-badge badge-md bg-purple">En attente</a></div>
+                {% else %}
+                <div class="ms-sm-1"><a href="{% url 'task_cross_off' task.id %}" class="badge super-badge badge-md bg-success">complete</a></div>
+                {% endif %}
+              </div>
+        </div>
+        <div>
             
-              {% else %}
-              <a class="badge super-badge bg-warning" href="{% url 'task_cross' task.id %}">uncomplete</a>
-            {% endif %}
-            </td>
-            <td>
-              <a class="btn btn-warning btn-sm" href="{% url 'taskUpdate' task.id %}">Update</a>
-        <a class="btn btn-danger btn-sm" href="{% url 'taskdelete' task.id %}">Delete</a>
-              </td>
+                <span class="h4 fw-normal text-gray">{{task.title}} </span> 
+            
+        </div>
+    </div>
+    <div class="col-10 col-sm-2 col-lg-2 col-xl-2 d-none d-lg-block d-xl-inline-flex align-items-center ms-lg-auto text-right justify-content-end px-md-0">
+        <div class="rating-star star-lg d-none d-lg-inline-block">
+            <input type="checkbox" id="InboxStar4" name="star"> 
+            <label class="rating-star-label" for="InboxStar4" style="color: rgb(239, 194, 47);">
+                <span class="sr-only" ></span>
+            </label>
+        </div>
+        <div class="btn-group ms-md-3">
+            <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="icon icon-sm">
+                    <span class="fas fa-ellipsis-h icon-dark"></span>
+                </span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end py-0">
+                <a class="dropdown-item rounded-top" href="{% url 'taskUpdate' task.id %}"><span class="fas fa-edit"></span>Edit</a>
+                <a class="dropdown-item text-warning" href="{% url 'taskdelete' task.id %}"><span class="fas fa-star"></span>Important</a>
+                <a class="dropdown-item text-danger rounded-bottom" href="#"><span class="fas fa-trash-alt"></span>Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+<div class="row p-4">
+<div class="col-7 mt-1">
+    Showing 1 - 5 of 289
+</div> <!-- end col-->
+<div class="col-5">
+    <div class="btn-group float-end">
+      {% if page_obj.has_previous %}  
+      <a href="?page={{page_obj.previous_page_number}}" class="btn btn-gray-200 disabled"><span class="fas fa-chevron-left"></span></a>
+      {% endif %}
+        <span>{{page_obj.number}}</span>
+        {%if page_obj.has_next %}
+        <a href="?page={{page_obj.next_page_number}}" class="btn btn-secondary"><span class="fas fa-chevron-right"></span></a>
+        {% endif %}
+    </div>
+</div> <!-- end col-->
+</div>
+</div>
 
-		</div>
-    </tr>
-    {% endif %}
-	{% endfor %}
-	</div>
-</div>
-</tbody>
-</table>
-</div>
+
+
+
+
+
+
 {% endblock content %}
 {% block javascripts %}
 <script>

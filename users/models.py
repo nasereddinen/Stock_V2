@@ -96,6 +96,9 @@ class distinations(models.Model):
     )
     nom_dis = models.CharField(max_length=50)
     societe = models.CharField(max_length=50,default='0', blank=True, null=True,choices=choix_societe)
+    
+    class Meta:
+        unique_together = ['nom_dis','societe']
     def __str__(self):
         return self.nom_dis+'-'+self.societe
     
