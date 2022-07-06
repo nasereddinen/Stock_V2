@@ -1,34 +1,57 @@
 {% extends "layouts/base.html" %}
 {% load crispy_forms_tags %}
+{% block stylesheets %}
+<style>
 
+
+</style>
+{% endblock stylesheets %}
 {% block content %}
 
-<div class="container-fluid py-4">
+<div class="container-fluid ">
 
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center ">
+        <div class="d-block mb-4 mb-md-0">
+            <h2 class="h4">Formulaire Facture  </h2>
+           
+        </div>
+       
+      </div>
 
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-
-<div>
-  <form  method="POST" id="myform">
+    <div class="card card-body border-0 shadow table-wrapper table-responsive">
+  <form  method="POST" id="myform" enctype="multipart/form-data">
         {% csrf_token %}
         
+<div class="facture">
+    <div class="row">
+        <div class="col-3">
+            {{form.phone_number|as_crispy_field}}
+        </div>
+        <div class="col-3">
+            {{form.ref|as_crispy_field}}
+        </div>
+        <div class="col-3">
+            {{form.Society|as_crispy_field}}
+        </div>
+        <div class="col-3">
+            {{form.dateen|as_crispy_field}}
+            </div>
+        </div>
 
-            {{form|crispy}}
-          
+        <div class="row">
+            {{form.facture_print|as_crispy_field}}
+            {{form.bondlev|as_crispy_field}}
+        </div>
+           
+        </div>
             {{ formset.management_form }}
 
             {% for field in formset %}
            
               
                   <div class="item d-flex justify-content-between" style="margin-top: 25px;">
-                    {{field}}
-                    <button class="align-self-center btn btn-danger delete-image-form">Delete</button>
+                    {{field|crispy}}
+                    <button class="align-self-center btn btn-danger delete-image-form mt-4"><i class="fa-solid fa-trash-can"></i></button>
                   </div>
                 
               
@@ -37,8 +60,8 @@
              
                
        
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <button id="add-form" type="button" class="btn btn-success">ajouter article</button>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        <button id="add-form" type="button" class="btn btn-success mt-3"><i class="fa-solid fa-plus" style="color: white;"></i></button>
      </form> 
   
   

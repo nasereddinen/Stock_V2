@@ -11,7 +11,9 @@ from django.shortcuts import get_object_or_404
 from django.forms import modelformset_factory
 from django.contrib import messages
 import csv
-
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from users import form
 from django.contrib.auth.decorators import login_required
 from django.core.mail import BadHeaderError, send_mail

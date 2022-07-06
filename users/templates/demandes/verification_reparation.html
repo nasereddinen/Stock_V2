@@ -8,27 +8,16 @@
 {% block content %}
 
 
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-      <div class="d-block mb-4 mb-md-0">
-          <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-              <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-               
-              <li class="breadcrumb-item"><a href="#">Stock</a></li>
-              <li class="breadcrumb-item active" aria-current="page">formulaire de reclamation</li>
-          </ol>
-      </nav>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-2">
+      <div class="d-block mb-1 mb-md-0">
+          
       <h2 class="h4">formulaire de reclamation</h2>
       <p class="mb-0">verifier l'etat de produit selectionner</p>
   </div>
     
   </div>
   
-  <div class="table-settings my-0">
-      <div class="row align-items-center justify-content-between">
-        
-     
-      </div>
-  </div>
+  
   
   <div class="card card-body border-0 shadow table-wrapper table-responsive">
     <p class="mx-5 justify-content-center" style="text-align: center !important;">verifier la reclamation de {{reclamation.demander}} : {{reclamation.article.id_sous_famille.designation}}-{{reclamation.article.id_sous_famille.marque}} 
@@ -44,7 +33,18 @@
     <option value="resolu" class="text-success">resolu</option>
     <option value="case" class="text-danger">case</option>
 </select>
+<div id="emp_form" style="display:none ;">
+<label class="my-1 me-2" for="etat">Emplacement</label>
+<select  id="emp_his" name = "emp_his" aria-label="Default select example" class="form-control">
+    
+    <option selected>selectionner une etat</option>
+    {% for emp in list_emp %}
+    <option value={{emp.issue_to.id}} class="text-dark">{{emp.issue_to.nom_dis}}</option>
+    {% endfor %}
+</select>
+</div>
         <button type="submit" class="btn btn-primary mt-3">submit</button>
+        <a href="{% url 'list_reclamation' %}" class="btn btn-danger mt-3" >annuler</a>
       </form>
      </div>
      
@@ -54,8 +54,15 @@
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 <script>
-
-
+    var emp_form = document.getElementById('emp_form')
+    var emp = document.getElementById('etat')
+emp.addEventListener("change", function(){
+  //Update this to your logic...
+  if(emp.value === "resolu"){
+    $("#emp_form").css("display", "block");
+    console.log("hidden")
+  }
+});
 </script>
 
 

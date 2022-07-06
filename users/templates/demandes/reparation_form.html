@@ -8,26 +8,16 @@
 {% block content %}
 
 
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-      <div class="d-block mb-4 mb-md-0">
-          <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-              <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-               
-              <li class="breadcrumb-item"><a href="#">Stock</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Demandes</li>
-          </ol>
-      </nav>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-1">
+      <div class="d-block mb-0 mb-md-0">
+        
       <h2 class="h4">Formulaire de Reclamation</h2>
       <p class="mb-0">description de l'etat de la produit</p>
   </div>
     
   </div>
   
-  <div class="table-settings my-0">
-      <div class="row align-items-center justify-content-between">
-        
-      </div>
-  </div>
+
   
   <div class="card card-body border-0 shadow table-wrapper table-responsive">
     <p class="mx-5 justify-content-center" style="text-align: center !important;">demande la Réparation de {{item.id_sous_famille.designation}}-{{item.id_sous_famille.marque}} 
@@ -39,6 +29,7 @@ de Box: {{item.issue_to.nom_dis}}.</p>
             <textarea class="form-control" id="exampleFormControlTextarea1" name="observation" rows="3"></textarea>
           </div>
         <button class="btn btn-primary mt-3" type="submit">submit</button>
+        <a href="{% url 'list_reparation' %}" class="btn btn-danger mt-3" >annuler</a>
       </form>
      </div>
      

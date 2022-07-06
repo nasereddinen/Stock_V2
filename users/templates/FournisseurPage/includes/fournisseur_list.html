@@ -2,7 +2,7 @@
   <tr>
     <td>{{ f.id }}</td>
     <td>{{ f.nom }}</td>
-    
+    <td>{{ f.fournisseur }}</td>
     <td style="width: 150px">
       <button type="button"
               class="btn btn-warning btn-sm js-update-fournisseur"
@@ -11,10 +11,12 @@
       </button>
       <button type="button"
               class="btn btn-danger btn-sm js-delete-fournisseur"
-              data-url="{% url 'delete_fournisseur' f.id %}">
+              data-url="{% url 'update_fournisseur' f.id %}">
         <span class="glyphicon glyphicon-trash"></span> Delete
       </button>
     </td>
+    <td><a  class="btn btn-success"  href="{% url 'Fournisseurmap' f.id %}"> <i class="fa-solid fa-location-dot"></i></a></td>
+    
   </tr>
 {% empty %}
   <tr>

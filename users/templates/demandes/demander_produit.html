@@ -10,13 +10,7 @@
 
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
       <div class="d-block mb-4 mb-md-0">
-          <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-              <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-               
-              <li class="breadcrumb-item"><a href="#">Stock</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Demandes</li>
-          </ol>
-      </nav>
+        
       <h2 class="h4">List Des produits</h2>
       <p class="mb-0">Demander les produits</p>
   </div>
@@ -53,20 +47,22 @@
               <tr>
                   <th class="border-gray-200">#</th>						
                   <th class="border-gray-200">Designation</th>
+                  <th class="border-gray-200">Icon</th>
                   <th class="border-gray-200">Quantite</th>
                   <th class="border-gray-200">Disponilité</th>
-                 
                   <th class="border-gray-200">demander</th>
               </tr>
           </thead>
           <tbody>
            
               <!-- Item -->
+              
               {% for article in listProducts %}
     
               <tr>
                <td>{{forloop.counter}}</td>
                 <td>{{article.id_sous_famille__designation}}</td>
+                <td class="justify-content-center"><span class=""><i class="{{article.id_sous_famille__icon}} fa-lg"></i></span></td>
                 <td> {{article.total_qt}} </td>
                 <td class="align-items-center"><div class="ms-sm-3 "><span class="badge super-badge bg-success">disponible</span></td>
              

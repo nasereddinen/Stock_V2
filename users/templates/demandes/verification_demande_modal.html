@@ -1,0 +1,50 @@
+{% load crispy_forms_tags %}
+                <form  method="POST" action="{% url 'valide_demande' form.instance.pk %}" class="verification-demande" >
+                    {% csrf_token %}
+                    <div class="modal-header">
+                      <h4 class="modal-title">Verification Demande</h4>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      
+                    </div>
+                    <div class="modal-body">
+                      <div class="mb-3">
+                        
+                    {{form|crispy}}
+                    </div>
+                    <div class="mb-3 qt_demander" style="display: none;">
+                      <label for="recipient-name" class="col-form-label">Quantite:</label>
+                    
+                      <input value="{{form.instance.quantite}}" id="qt_liv" name="quantite_livred" placeholder="saisie la quantité donner" type="number" class="form-control" >
+                      <label for="recipient-name" class="col-form-label mt-2">Emplacement:</label>
+                      <select  id="emplacement" name = "emplacement" aria-label="Default select example" class="form-control mt-1">
+                        <option selected>Selectionner Un Emplacement</option>
+                       {% for emp in destinations %}
+                       <option value="{{emp.id}}" class="text-warning">{{emp.nom_dis}}</option>
+                       {% endfor %}
+                    </select>
+                    </div>
+                  </div>
+                    <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary mt-3">submit</button>
+                  </div>
+                    </form>
+            
+   
+      
+
+<script>
+$(document).ready(function() {
+  $('#table').DataTable();} );
+var emp_form = document.getElementsByClassName('qt_demander')
+var emp = document.getElementById('id_validation')
+emp.addEventListener("change", function(){
+  //Update this to your logic...
+  if(emp.value === "valider"){
+    $(".qt_demander").css("display", "block");
+    console.log("hidden")
+  }
+});
+
+</script>
+
+

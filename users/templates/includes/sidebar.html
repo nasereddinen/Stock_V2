@@ -108,12 +108,12 @@
                     </li>
                     <li class="nav-item {% if 'bootstrap-tables' in segment %} active {% endif %}">
                       <a class="nav-link" href="{% url 'retour_details' %}">
-                        <span class="sidebar-text">Retour Stock</span>
+                        <span class="sidebar-text">retour de materiel</span>
                       </a>
                     </li>
                     <li class="nav-item {% if 'bootstrap-tables' in segment %} active {% endif %}">
                       <a class="nav-link" href="{% url 'Sortie_Stock' %}">
-                        <span class="sidebar-text">Sortie_Stock</span>
+                        <span class="sidebar-text">affectation de materiel</span>
                       </a>
                     </li>
                     <li class="nav-item {% if 'bootstrap-tables' in segment %} active {% endif %}">
@@ -144,19 +144,15 @@
                   <ul class="flex-column nav">
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'fournisseur' %}">
-                        <span class="sidebar-text">Fournisseur</span>
+                        <span class="sidebar-text">Fournisseurs</span>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'Contrat' %}">
-                        <span class="sidebar-text">Contrat</span>
+                        <span class="sidebar-text">Contrats</span>
                       </a>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="{% url 'gest_Distinations' %}">
-                        <span class="sidebar-text">gest_Distinations</span>
-                      </a>
-                    </li>
+                    
                   </ul>
                 </div>
               </li>
@@ -185,7 +181,7 @@
                    
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'emp_societe' %}">
-                        <span class="sidebar-text">emplacement-societe</span>
+                        <span class="sidebar-text">emplacement par societe</span>
                       </a>
                     </li>
                   </ul>
@@ -199,7 +195,7 @@
                     <span class="sidebar-icon">
                       <svg class="icon icon-xs me-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M2 5a2 2 0 012-2h8a2 2 0 012 2v10a2 2 0 002 2H4a2 2 0 01-2-2V5zm3 1h6v4H5V6zm6 6H5v2h6v-2z" clip-rule="evenodd"></path><path d="M15 7h1a2 2 0 012 2v5.5a1.5 1.5 0 01-3 0V7z"></path></svg>
                     </span> 
-                    <span class="sidebar-text">Demandes </span>
+                    <span class="sidebar-text">Demander </span>
                   </span>
                   <span class="link-arrow">
                     <svg class="icon icon-sm" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
@@ -210,22 +206,22 @@
                   <ul class="flex-column nav">
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'list_product' %}">
-                        <span class="sidebar-text">Demande un produit </span>
+                        <span class="sidebar-text">Demander un produit </span>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'list_demande' %}">
-                        <span class="sidebar-text">tout Demande </span>
+                        <span class="sidebar-text">Toutes les Demandes </span>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'list_reparation' %}">
-                        <span class="sidebar-text">reclamation</span>
+                        <span class="sidebar-text">Reclamation</span>
                       </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="{% url 'list_reclamation' %}">
-                        <span class="sidebar-text">liste des reclamations</span>
+                        <span class="sidebar-text">Liste des reclamations</span>
                       </a>
                     </li>
                   </ul>

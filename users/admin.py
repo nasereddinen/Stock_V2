@@ -20,7 +20,7 @@ admin.site.register(Task)
 admin.site.register(distinations)
 admin.site.register(Group)
 admin.site.register(reparation_materiel)
-
+admin.site.register(Demande_Devis)
 admin.site.register(Contrat)
 admin.site.register(demande)
 admin.site.site_header = 'interface superuser'

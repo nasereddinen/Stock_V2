@@ -8,15 +8,8 @@
 {% block content %}
 
 
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-      <div class="d-block mb-4 mb-md-0">
-          <nav aria-label="breadcrumb" class="d-none d-md-inline-block">
-              <ol class="breadcrumb breadcrumb-dark breadcrumb-transparent">
-               
-              <li class="breadcrumb-item"><a href="#">Stock</a></li>
-              <li class="breadcrumb-item active" aria-current="page">Reclamations</li>
-          </ol>
-      </nav>
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-1">
+      <div class="d-block mb-0 mb-md-0">
       <h2 class="h4">List Des Reclamation {{titre_etat}}</h2>
       <p class="mb-0">Demander les produits</p>
   </div>
@@ -77,7 +70,7 @@
                 <td>{{item.created}}</td>
                 <td>{{item.article.issue_to.nom_dis}}</td>
                 <td><span class="badge super-badge {% if item.etat == 'resolu' %} bg-success {% elif item.etat == 'en-cours'%} bg-warning {% else %} bg-danger {% endif %}">{{item.etat}}</span></td>
-                          <td class="fw-bold d-flex align-items-center">
+                          <td class="">
                             {{item.observation}}
                             </td> 
                             <td>

@@ -1,0 +1,69 @@
+{% extends "layouts/base.html" %}
+{% load crispy_forms_tags %}
+{% block stylesheets %}
+<style>
+ 
+</style>
+{% endblock stylesheets %}
+{% block content %}
+
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+  <div class="d-block mb-4 mb-md-0">
+  <h2 class="h4">Demande De Devis</h2>
+  </div>
+</div>
+
+
+
+<div class="card card-body border-0 shadow table-wrapper table-responsive">
+  <form method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-8">
+      <select id="multipleselect" name="fournisseurs" placeholder="Bonjour choisie les fournisseurs" multiple>
+        {% for frn in list_fournisseur %}
+          <option value="{{frn.id}}">{{frn.fournisseur}}</option>
+          {% endfor %}
+      </select>
+    </div>
+    <div class="col-4">
+      <select class="form-select" name="societe" placeholder="choisie une societe" >
+      <option value="Tanis">Tanis</option>
+      <option value="Argos">Argos</option>
+      <option value="Ithaque">Ithaque</option>
+      <option value="Jupiter">Jupiter</option>
+      </select>
+    </div>
+    </div>
+    
+  {{ formset.management_form }}
+
+            {% for field in formset %}
+                  <div class="item d-flex justify-content-between" style="margin-top: 25px;">
+                    {{field}}
+                  </div>
+                {% endfor %}
+        </div>
+        <button class="btn btn-primary mt-3" type="submit">Envoyer</button>
+      </form>
+      <!-- follow me template -->
+      
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+$(document).ready(function() {
+  $('#table').DataTable();
+} );
+$(document).ready(function(){
+var multipleSelectButton = new Choices('#multipleselect', {
+removeItemButton: true,
+maxItemCount:5,
+});
+});
+</script>
+
+
+
+{% endblock javascripts %}
